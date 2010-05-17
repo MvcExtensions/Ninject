@@ -16,7 +16,7 @@ namespace MvcExtensions.Ninject
     using IKernel = global::Ninject.IKernel;
 
     /// <summary>
-    /// Defines an adapter class which with backed by Ninject <seealso cref="IKernel">Kernel</seealso>.
+    /// Defines an adapter class which is backed by Ninject <seealso cref="IKernel">Kernel</seealso>.
     /// </summary>
     public class NinjectAdapter : ServiceLocatorImplBase, IServiceRegistrar, IServiceInjector, IDisposable
     {
