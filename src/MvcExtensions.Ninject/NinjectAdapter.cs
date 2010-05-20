@@ -9,19 +9,15 @@ namespace MvcExtensions.Ninject
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
 
-    using Microsoft.Practices.ServiceLocation;
     using Extension = global::Ninject.ResolutionExtensions;
     using IKernel = global::Ninject.IKernel;
 
     /// <summary>
     /// Defines an adapter class which is backed by Ninject <seealso cref="IKernel">Kernel</seealso>.
     /// </summary>
-    public class NinjectAdapter : ServiceLocatorImplBase, IServiceRegistrar, IServiceInjector, IDisposable
+    public class NinjectAdapter : ContainerAdapter
     {
-        private bool disposed;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="NinjectAdapter"/> class.
         /// </summary>
@@ -31,16 +27,6 @@ namespace MvcExtensions.Ninject
             Invariant.IsNotNull(kernel, "kernel");
 
             Kernel = kernel;
-        }
-
-        /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="NinjectAdapter"/> is reclaimed by garbage collection.
-        /// </summary>
-        [DebuggerStepThrough]
-        ~NinjectAdapter()
-        {
-            Dispose(false);
         }
 
         /// <summary>
@@ -54,16 +40,6 @@ namespace MvcExtensions.Ninject
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        [DebuggerStepThrough]
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Registers the type.
         /// </summary>
         /// <param name="key">The key.</param>
@@ -71,7 +47,7 @@ namespace MvcExtensions.Ninject
         /// <param name="implementationType">Type of the implementation.</param>
         /// <param name="lifetime">The lifetime of the service.</param>
         /// <returns></returns>
-        public virtual IServiceRegistrar RegisterType(string key, Type serviceType, Type implementationType, LifetimeType lifetime)
+        public override IServiceRegistrar RegisterType(string key, Type serviceType, Type implementationType, LifetimeType lifetime)
         {
             Invariant.IsNotNull(serviceType, "serviceType");
             Invariant.IsNotNull(implementationType, "implementationType");
@@ -99,7 +75,7 @@ namespace MvcExtensions.Ninject
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="instance">The instance.</param>
         /// <returns></returns>
-        public virtual IServiceRegistrar RegisterInstance(string key, Type serviceType, object instance)
+        public override IServiceRegistrar RegisterInstance(string key, Type serviceType, object instance)
         {
             Invariant.IsNotNull(serviceType, "serviceType");
             Invariant.IsNotNull(instance, "instance");
@@ -118,7 +94,7 @@ namespace MvcExtensions.Ninject
         /// Injects the matching dependences.
         /// </summary>
         /// <param name="instance">The instance.</param>
-        public virtual void Inject(object instance)
+        public override void Inject(object instance)
         {
             if (instance != null)
             {
@@ -150,16 +126,9 @@ namespace MvcExtensions.Ninject
         /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
-        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        [DebuggerStepThrough]
-        protected virtual void Dispose(bool disposing)
+        protected override void DisposeCore()
         {
-            if (!disposed && disposing)
-            {
-                Kernel.Dispose();
-            }
-
-            disposed = true;
+            Kernel.Dispose();
         }
     }
 }

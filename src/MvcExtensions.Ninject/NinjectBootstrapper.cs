@@ -11,8 +11,6 @@ namespace MvcExtensions.Ninject
     using System.Linq;
     using System.Web;
 
-    using Microsoft.Practices.ServiceLocation;
-
     using IKernel = global::Ninject.IKernel;
     using IModule = global::Ninject.Modules.INinjectModule;
     using Kernel = global::Ninject.StandardKernel;
@@ -33,10 +31,10 @@ namespace MvcExtensions.Ninject
         }
 
         /// <summary>
-        /// Creates the service locator.
+        /// Creates the container adapter.
         /// </summary>
         /// <returns></returns>
-        protected override IServiceLocator CreateServiceLocator()
+        protected override ContainerAdapter CreateAdapter()
         {
             IKernel kernel = new Kernel();
 
@@ -50,7 +48,7 @@ namespace MvcExtensions.Ninject
         /// </summary>
         protected override void LoadModules()
         {
-            IKernel kernel = ((NinjectAdapter)ServiceLocator).Kernel;
+            IKernel kernel = ((NinjectAdapter)Adapter).Kernel;
 
             BuildManager.ConcreteTypes
                         .Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())

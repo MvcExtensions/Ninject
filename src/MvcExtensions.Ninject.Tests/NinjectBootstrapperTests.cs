@@ -10,7 +10,6 @@ namespace MvcExtensions.Ninject.Tests
     using System;
     using System.Collections.Generic;
 
-    using Microsoft.Practices.ServiceLocation;
     using Ninject;
 
     using Moq;
@@ -25,14 +24,14 @@ namespace MvcExtensions.Ninject.Tests
     public class NinjectBootstrapperTests
     {
         [Fact]
-        public void Should_be_able_to_create_service_locator()
+        public void Should_be_able_to_create_container()
         {
             var buildManager = new Mock<IBuildManager>();
             buildManager.SetupGet(bm => bm.Assemblies).Returns(new[] { GetType().Assembly });
 
             var bootstrapper = new NinjectBootstrapper(buildManager.Object);
 
-            Assert.IsType<NinjectAdapter>(bootstrapper.ServiceLocator);
+            Assert.IsType<NinjectAdapter>(bootstrapper.Adapter);
         }
 
         [Fact]
@@ -59,7 +58,7 @@ namespace MvcExtensions.Ninject.Tests
 
             var bootstrapper = new NinjectBootstrapperTestDouble(kernel.Object, buildManager.Object);
 
-            Assert.IsType<NinjectAdapter>(bootstrapper.ServiceLocator);
+            Assert.IsType<NinjectAdapter>(bootstrapper.Adapter);
 
             kernel.Verify();
         }
@@ -96,7 +95,7 @@ namespace MvcExtensions.Ninject.Tests
                 this.kernel = kernel;
             }
 
-            protected override IServiceLocator CreateServiceLocator()
+            protected override ContainerAdapter CreateAdapter()
             {
                 return new NinjectAdapter(kernel);
             }

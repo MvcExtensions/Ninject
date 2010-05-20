@@ -25,7 +25,7 @@ namespace MvcExtensions.Ninject.Tests
     public class NinjectAdapterTests
     {
         private readonly Mock<IKernel> kernel;
-        private NinjectAdapter adapter;
+        private readonly NinjectAdapter adapter;
 
         public NinjectAdapterTests()
         {
@@ -41,15 +41,6 @@ namespace MvcExtensions.Ninject.Tests
             adapter.Dispose();
 
             kernel.VerifyAll();
-        }
-
-        [Fact]
-        public void Should_finalize()
-        {
-            adapter = null;
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
         }
 
         [Theory]
