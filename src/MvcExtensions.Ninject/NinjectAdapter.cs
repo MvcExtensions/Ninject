@@ -103,6 +103,16 @@ namespace MvcExtensions.Ninject
         }
 
         /// <summary>
+        /// Release the memory occupied by the specified instance.
+        /// </summary>
+        /// <param name="instance"></param>
+        public override void Release(object instance)
+        {
+            Kernel.Release(instance);
+            base.Release(instance);
+        }
+
+        /// <summary>
         /// Gets the matching instance for the given type and key.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
