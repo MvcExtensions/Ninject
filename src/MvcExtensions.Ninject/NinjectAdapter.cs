@@ -103,32 +103,22 @@ namespace MvcExtensions.Ninject
         }
 
         /// <summary>
-        /// Release the memory occupied by the specified instance.
-        /// </summary>
-        /// <param name="instance"></param>
-        public override void Release(object instance)
-        {
-            Kernel.Release(instance);
-            base.Release(instance);
-        }
-
-        /// <summary>
-        /// Gets the matching instance for the given type and key.
+        /// Gets the service.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        protected override object DoGetInstance(Type serviceType, string key)
+        protected override object DoGetService(Type serviceType, string key)
         {
             return Extension.Get(Kernel, serviceType, key);
         }
 
         /// <summary>
-        /// Gets all the instances for the given type.
+        /// Gets the services.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns></returns>
-        protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
+        protected override IEnumerable<object> DoGetServices(Type serviceType)
         {
             return Extension.GetAll(Kernel, serviceType);
         }
