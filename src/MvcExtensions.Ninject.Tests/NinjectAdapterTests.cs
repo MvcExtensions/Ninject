@@ -9,6 +9,7 @@ namespace MvcExtensions.Ninject.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Mvc;
 
     using Moq;
     using Xunit;
