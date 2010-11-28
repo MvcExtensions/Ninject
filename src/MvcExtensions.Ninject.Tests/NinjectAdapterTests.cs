@@ -9,6 +9,7 @@ namespace MvcExtensions.Ninject.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Web.Mvc;
 
     using Moq;
     using Xunit;
@@ -107,31 +108,31 @@ namespace MvcExtensions.Ninject.Tests
         }
 
         [Fact]
-        public void Should_be_able_to_get_instance_by_type()
+        public void Should_be_able_to_get_service_by_type()
         {
             SetupResolve();
 
-            adapter.GetInstance<DummyObject>();
+            adapter.GetService<DummyObject>();
 
             kernel.VerifyAll();
         }
 
         [Fact]
-        public void Should_be_able_to_get_instance_by_type_and_key()
+        public void Should_be_able_to_get_service_by_type_and_key()
         {
             SetupResolve();
 
-            adapter.GetInstance<DummyObject>("foo");
+            adapter.GetService<DummyObject>("foo");
 
             kernel.VerifyAll();
         }
 
         [Fact]
-        public void Should_be_able_to_get_all_instances()
+        public void Should_be_able_to_get_services()
         {
             SetupResolve();
 
-            adapter.GetAllInstances(typeof(DummyObject));
+            adapter.GetServices(typeof(DummyObject));
 
             kernel.VerifyAll();
         }
