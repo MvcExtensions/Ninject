@@ -26,7 +26,9 @@ namespace MvcExtensions.Ninject
         /// Initializes a new instance of the <see cref="NinjectBootstrapper"/> class.
         /// </summary>
         /// <param name="buildManager">The build manager.</param>
-        public NinjectBootstrapper(IBuildManager buildManager) : base(buildManager)
+        /// <param name="bootstrapperTasks">The bootstrapper tasks.</param>
+        /// <param name="perRequestTasks">The per request tasks.</param>
+        public NinjectBootstrapper(IBuildManager buildManager, IBootstrapperTasksRegistry bootstrapperTasks, IPerRequestTasksRegistry perRequestTasks) : base(buildManager, bootstrapperTasks, perRequestTasks)
         {
         }
 

@@ -20,7 +20,7 @@ namespace MvcExtensions.Ninject
         /// <returns></returns>
         protected override IBootstrapper CreateBootstrapper()
         {
-            return new NinjectBootstrapper(BuildManagerWrapper.Current);
+            return new NinjectBootstrapper(BuildManagerWrapper.Current, BootstrapperTasksRegistry.Current, PerRequestTasksRegistry.Current);
         }
     }
 }

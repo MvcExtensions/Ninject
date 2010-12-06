@@ -29,7 +29,7 @@ namespace MvcExtensions.Ninject.Tests
             var buildManager = new Mock<IBuildManager>();
             buildManager.SetupGet(bm => bm.Assemblies).Returns(new[] { GetType().Assembly });
 
-            var bootstrapper = new NinjectBootstrapper(buildManager.Object);
+            var bootstrapper = new NinjectBootstrapper(buildManager.Object, new Mock<IBootstrapperTasksRegistry>().Object, new Mock<IPerRequestTasksRegistry>().Object);
 
             Assert.IsType<NinjectAdapter>(bootstrapper.Adapter);
         }
@@ -56,7 +56,7 @@ namespace MvcExtensions.Ninject.Tests
 
             kernel.Setup(k => k.Load(It.IsAny<IEnumerable<IModule>>())).Verifiable();
 
-            var bootstrapper = new NinjectBootstrapperTestDouble(kernel.Object, buildManager.Object);
+            var bootstrapper = new NinjectBootstrapperTestDouble(kernel.Object, buildManager.Object, new Mock<IBootstrapperTasksRegistry>().Object, new Mock<IPerRequestTasksRegistry>().Object);
 
             Assert.IsType<NinjectAdapter>(bootstrapper.Adapter);
 
@@ -90,7 +90,7 @@ namespace MvcExtensions.Ninject.Tests
         {
             private readonly IKernel kernel;
 
-            public NinjectBootstrapperTestDouble(IKernel kernel, IBuildManager buildManager) : base(buildManager)
+            public NinjectBootstrapperTestDouble(IKernel kernel, IBuildManager buildManager, IBootstrapperTasksRegistry bootstrapperTasksRegistry, IPerRequestTasksRegistry perRequestTasksRegistry) : base(buildManager, bootstrapperTasksRegistry, perRequestTasksRegistry)
             {
                 this.kernel = kernel;
             }
