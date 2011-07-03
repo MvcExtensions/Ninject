@@ -8,9 +8,7 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security;
 
-[assembly: AllowPartiallyTrustedCallers]
 [assembly: AssemblyTitle("MvcExtensions.Ninject")]
 [assembly: AssemblyProduct("MvcExtensions.Ninject")]
 [assembly: CLSCompliant(true)]
