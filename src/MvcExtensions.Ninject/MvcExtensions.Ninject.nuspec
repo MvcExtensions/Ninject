@@ -15,6 +15,7 @@
   </metadata>
   <files>
     <file src="MvcExtensions.Ninject.dll" target="lib\net40\MvcExtensions.Ninject.dll" />
+    <file src="MvcExtensions.Ninject.pdb" target="lib\net40\MvcExtensions.Ninject.pdb" />
     <file src="MvcExtensions.Ninject.xml" target="lib\net40\MvcExtensions.Ninject.xml" />
   </files>
 </package>
