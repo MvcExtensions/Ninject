@@ -9,8 +9,9 @@ namespace MvcExtensions.Ninject
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Linq;
     using global::Ninject;
+    using global::Ninject.Parameters;
     using global::Ninject.Syntax;
 
     /// <summary>
@@ -100,7 +101,8 @@ namespace MvcExtensions.Ninject
         /// <returns></returns>
         protected override object DoGetService(Type serviceType)
         {
-            return Kernel.Get(serviceType);
+            var request = Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true);
+            return Kernel.Resolve(request).SingleOrDefault();
         }
 
         /// <summary>
