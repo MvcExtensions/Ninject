@@ -1,17 +1,19 @@
 #region Copyright
+
 // Copyright (c) 2009 - 2010, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
 // This source is subject to the Microsoft Public License. 
 // See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
 // All other rights reserved.
+
 #endregion
 
 namespace MvcExtensions.Ninject
 {
     using System;
     using System.Collections.Generic;
-
-    using Extension = global::Ninject.ResolutionExtensions;
-    using IKernel = global::Ninject.IKernel;
+    
+    using global::Ninject;
+    using global::Ninject.Syntax;
 
     /// <summary>
     /// Defines an adapter class which is backed by Ninject <seealso cref="IKernel">Kernel</seealso>.
@@ -33,11 +35,7 @@ namespace MvcExtensions.Ninject
         /// Gets the kernel.
         /// </summary>
         /// <value>The kernel.</value>
-        public IKernel Kernel
-        {
-            get;
-            private set;
-        }
+        public IKernel Kernel { get; private set; }
 
         /// <summary>
         /// Registers the type.
@@ -52,13 +50,13 @@ namespace MvcExtensions.Ninject
             Invariant.IsNotNull(serviceType, "serviceType");
             Invariant.IsNotNull(implementationType, "implementationType");
 
-            var bindingExpression = Kernel.Bind(serviceType).To(implementationType);
+            IBindingWhenInNamedWithOrOnSyntax<object> bindingExpression = Kernel.Bind(serviceType).To(implementationType);
 
-            var expression = (lifetime == LifetimeType.PerRequest) ?
-                             bindingExpression.InRequestScope() : 
-                             ((lifetime == LifetimeType.Singleton) ?
-                             bindingExpression.InSingletonScope() :
-                             bindingExpression.InTransientScope());
+            IBindingNamedWithOrOnSyntax<object> expression = (lifetime == LifetimeType.PerRequest)
+                                                                 ? bindingExpression.InRequestScope()
+                                                                 : ((lifetime == LifetimeType.Singleton)
+                                                                        ? bindingExpression.InSingletonScope()
+                                                                        : bindingExpression.InTransientScope());
 
             if (!string.IsNullOrEmpty(key))
             {
@@ -80,7 +78,7 @@ namespace MvcExtensions.Ninject
             Invariant.IsNotNull(serviceType, "serviceType");
             Invariant.IsNotNull(instance, "instance");
 
-            var bindingExpression = Kernel.Bind(serviceType).ToConstant(instance);
+            IBindingWhenInNamedWithOrOnSyntax<object> bindingExpression = Kernel.Bind(serviceType).ToConstant(instance);
 
             if (!string.IsNullOrEmpty(key))
             {
@@ -110,7 +108,7 @@ namespace MvcExtensions.Ninject
         /// <returns></returns>
         protected override object DoGetService(Type serviceType, string key)
         {
-            return Extension.Get(Kernel, serviceType, key);
+            return Kernel.Get(serviceType, key);
         }
 
         /// <summary>
@@ -120,7 +118,7 @@ namespace MvcExtensions.Ninject
         /// <returns></returns>
         protected override IEnumerable<object> DoGetServices(Type serviceType)
         {
-            return Extension.GetAll(Kernel, serviceType);
+            return Kernel.GetAll(serviceType);
         }
 
         /// <summary>

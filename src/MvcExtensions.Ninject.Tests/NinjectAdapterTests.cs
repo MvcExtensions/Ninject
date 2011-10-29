@@ -118,16 +118,6 @@ namespace MvcExtensions.Ninject.Tests
         }
 
         [Fact]
-        public void Should_be_able_to_get_service_by_type_and_key()
-        {
-            SetupResolve();
-
-            adapter.GetService<DummyObject>("foo");
-
-            kernel.VerifyAll();
-        }
-
-        [Fact]
         public void Should_be_able_to_get_services()
         {
             SetupResolve();
