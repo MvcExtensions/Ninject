@@ -99,7 +99,7 @@ namespace MvcExtensions.Ninject
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns></returns>
-        protected override object DoGetService(Type serviceType)
+        public override object GetService(Type serviceType)
         {
             var request = Kernel.CreateRequest(serviceType, null, new Parameter[0], true, true);
             return Kernel.Resolve(request).SingleOrDefault();
@@ -110,7 +110,7 @@ namespace MvcExtensions.Ninject
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
         /// <returns></returns>
-        protected override IEnumerable<object> DoGetServices(Type serviceType)
+        public override IEnumerable<object> GetServices(Type serviceType)
         {
             return Kernel.GetAll(serviceType);
         }
