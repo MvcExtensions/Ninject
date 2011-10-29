@@ -1,10 +1,8 @@
 #region Copyright
-
 // Copyright (c) 2009 - 2010, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
 // This source is subject to the Microsoft Public License. 
 // See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
 // All other rights reserved.
-
 #endregion
 
 namespace MvcExtensions.Ninject
@@ -40,27 +38,28 @@ namespace MvcExtensions.Ninject
         /// <summary>
         /// Registers the type.
         /// </summary>
-        /// <param name="key">The key.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="implementationType">Type of the implementation.</param>
         /// <param name="lifetime">The lifetime of the service.</param>
         /// <returns></returns>
-        public override IServiceRegistrar RegisterType(string key, Type serviceType, Type implementationType, LifetimeType lifetime)
+        public override IServiceRegistrar RegisterType(Type serviceType, Type implementationType, LifetimeType lifetime)
         {
             Invariant.IsNotNull(serviceType, "serviceType");
             Invariant.IsNotNull(implementationType, "implementationType");
 
-            IBindingWhenInNamedWithOrOnSyntax<object> bindingExpression = Kernel.Bind(serviceType).To(implementationType);
+            IBindingWhenInNamedWithOrOnSyntax<object> expression = Kernel.Bind(serviceType).To(implementationType);
 
-            IBindingNamedWithOrOnSyntax<object> expression = (lifetime == LifetimeType.PerRequest)
-                                                                 ? bindingExpression.InRequestScope()
-                                                                 : ((lifetime == LifetimeType.Singleton)
-                                                                        ? bindingExpression.InSingletonScope()
-                                                                        : bindingExpression.InTransientScope());
-
-            if (!string.IsNullOrEmpty(key))
+            switch (lifetime)
             {
-                expression.Named(key);
+                case LifetimeType.PerRequest:
+                    expression.InRequestScope();
+                    break;
+                case LifetimeType.Singleton:
+                    expression.InSingletonScope();
+                    break;
+                default:
+                    expression.InTransientScope();
+                    break;
             }
 
             return this;
@@ -69,21 +68,15 @@ namespace MvcExtensions.Ninject
         /// <summary>
         /// Registers the instance.
         /// </summary>
-        /// <param name="key">The key.</param>
         /// <param name="serviceType">Type of the service.</param>
         /// <param name="instance">The instance.</param>
         /// <returns></returns>
-        public override IServiceRegistrar RegisterInstance(string key, Type serviceType, object instance)
+        public override IServiceRegistrar RegisterInstance(Type serviceType, object instance)
         {
             Invariant.IsNotNull(serviceType, "serviceType");
             Invariant.IsNotNull(instance, "instance");
 
-            IBindingWhenInNamedWithOrOnSyntax<object> bindingExpression = Kernel.Bind(serviceType).ToConstant(instance);
-
-            if (!string.IsNullOrEmpty(key))
-            {
-                bindingExpression.Named(key);
-            }
+            Kernel.Bind(serviceType).ToConstant(instance);
 
             return this;
         }
@@ -104,11 +97,10 @@ namespace MvcExtensions.Ninject
         /// Gets the service.
         /// </summary>
         /// <param name="serviceType">Type of the service.</param>
-        /// <param name="key">The key.</param>
         /// <returns></returns>
-        protected override object DoGetService(Type serviceType, string key)
+        protected override object DoGetService(Type serviceType)
         {
-            return Kernel.Get(serviceType, key);
+            return Kernel.Get(serviceType);
         }
 
         /// <summary>

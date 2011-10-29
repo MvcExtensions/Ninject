@@ -45,10 +45,10 @@ namespace MvcExtensions.Ninject.Tests
         }
 
         [Theory]
-        [InlineData(LifetimeType.Transient, "foo")]
-        [InlineData(LifetimeType.Singleton, null)]
-        [InlineData(LifetimeType.PerRequest, "")]
-        public void Should_be_able_to_register(LifetimeType lifetime, string key)
+        [InlineData(LifetimeType.Transient)]
+        [InlineData(LifetimeType.Singleton)]
+        [InlineData(LifetimeType.PerRequest)]
+        public void Should_be_able_to_register(LifetimeType lifetime)
         {
             var bindingName = new Mock<IBindingNamedWithOrOnSyntax>();
 
@@ -72,7 +72,7 @@ namespace MvcExtensions.Ninject.Tests
             bindingTo.Setup(b => b.To(It.IsAny<Type>())).Returns(bindingWhen.Object);
             kernel.Setup(k => k.Bind(It.IsAny<Type>())).Returns(bindingTo.Object);
 
-            adapter.RegisterType(key, typeof(object), typeof(object), lifetime);
+            adapter.RegisterType(typeof(object), typeof(object), lifetime);
 
             bindingWhen.Verify();
         }
@@ -80,18 +80,12 @@ namespace MvcExtensions.Ninject.Tests
         [Fact]
         public void Should_be_able_to_register_instance()
         {
-            var bindingWhen = new Mock<IBindingWhenInNamedWithOrOnSyntax>();
-            bindingWhen.Setup(b => b.Named(It.IsAny<string>())).Verifiable();
-
             var bindingTo = new Mock<IBindingToSyntax>();
-
-            bindingTo.Setup(b => b.ToConstant(It.IsAny<object>())).Returns(bindingWhen.Object).Verifiable();
 
             kernel.Setup(k => k.Bind(It.IsAny<Type>())).Returns(bindingTo.Object);
 
-            adapter.RegisterInstance("foo", typeof(DummyObject), new DummyObject());
+            adapter.RegisterInstance(typeof(DummyObject), new DummyObject());
 
-            bindingWhen.Verify();
             bindingTo.Verify();
         }
 
