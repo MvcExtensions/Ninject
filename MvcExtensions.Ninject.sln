@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SharedFiles", "SharedFiles", "{1AA92940-0B90-42B2-8E7B-A85F6248FB94}"
+	ProjectSection(SolutionItems) = preProject
+		build.bat = build.bat
+		src\SharedFiles\CodeAnalysisDictionary.xml = src\SharedFiles\CodeAnalysisDictionary.xml
+		src\SharedFiles\CommonAssemblyInfo.cs = src\SharedFiles\CommonAssemblyInfo.cs
+		InstallPackages.bat = InstallPackages.bat
+		license.txt = license.txt
+		MvcExtensions.build = MvcExtensions.build
+		src\SharedFiles\MvcExtensions.snk = src\SharedFiles\MvcExtensions.snk
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcExtensions.Ninject", "src\MvcExtensions.Ninject\MvcExtensions.Ninject.csproj", "{7943FDCB-D117-4DFA-957F-7F5186BBA905}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcExtensions.Ninject.Tests", "src\MvcExtensions.Ninject.Tests\MvcExtensions.Ninject.Tests.csproj", "{4A158210-4DBB-4EF2-AB5D-5F607E6E5741}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7943FDCB-D117-4DFA-957F-7F5186BBA905}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7943FDCB-D117-4DFA-957F-7F5186BBA905}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7943FDCB-D117-4DFA-957F-7F5186BBA905}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7943FDCB-D117-4DFA-957F-7F5186BBA905}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A158210-4DBB-4EF2-AB5D-5F607E6E5741}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A158210-4DBB-4EF2-AB5D-5F607E6E5741}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A158210-4DBB-4EF2-AB5D-5F607E6E5741}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A158210-4DBB-4EF2-AB5D-5F607E6E5741}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35
+	EndGlobalSection
+EndGlobal
