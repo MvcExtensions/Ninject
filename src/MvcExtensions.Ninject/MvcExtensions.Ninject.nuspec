@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>ASP.NET MVC Extensions is framework developed on top of ASP.NET MVC extensibility point, which allows your IoC Container to rule everywhere.</description>
     <dependencies>
-      <dependency id="Ninject" version="[2.2,3)" />
+      <dependency id="Ninject" version="[2.2.1.4]" />
       <dependency id="MvcExtensions" version="[2.5-a,3)" />
     </dependencies>
   </metadata>
