@@ -9,7 +9,7 @@ namespace MvcExtensions.Ninject.Tests
 {
     using System;
     using System.Collections.Generic;
-
+    using System.Reflection;
     using Ninject;
 
     using Moq;
@@ -20,6 +20,8 @@ namespace MvcExtensions.Ninject.Tests
     using IBindingWhenInNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax<object>;
     using IKernel = global::Ninject.IKernel;
     using IModule = global::Ninject.Modules.INinjectModule;
+    using IContext = global::Ninject.Activation.IContext;
+    using global::Ninject.Web.Common;
 
     public class NinjectBootstrapperTests
     {
@@ -45,7 +47,9 @@ namespace MvcExtensions.Ninject.Tests
 
             bindingWhen.Setup(b => b.InTransientScope()).Returns(bindingName.Object);
             bindingWhen.Setup(b => b.InSingletonScope()).Returns(bindingName.Object);
-            bindingWhen.Setup(b => b.InRequestScope()).Returns(bindingName.Object);
+
+            var func = (Func<IContext, object>)Delegate.CreateDelegate(typeof(Func<IContext, object>), typeof(RequestScopeExtensionMethod).GetMethod("GetScope", BindingFlags.NonPublic | BindingFlags.Static));
+            bindingWhen.Setup(b => b.InScope(func)).Returns(bindingName.Object).Verifiable();
 
             var bindingTo = new Mock<IBindingToSyntax>();
             bindingTo.Setup(b => b.To(It.IsAny<Type>())).Returns(bindingWhen.Object);
@@ -65,6 +69,11 @@ namespace MvcExtensions.Ninject.Tests
 
         private sealed class DummyModule : IModule
         {
+            public void OnVerifyRequiredModules()
+            {
+                throw new NotImplementedException();
+            }
+
             public string Name
             {
                 get;

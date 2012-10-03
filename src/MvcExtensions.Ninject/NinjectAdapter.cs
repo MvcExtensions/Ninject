@@ -13,6 +13,7 @@ namespace MvcExtensions.Ninject
     using global::Ninject;
     using global::Ninject.Parameters;
     using global::Ninject.Syntax;
+    using global::Ninject.Web.Common;
 
     /// <summary>
     /// Defines an adapter class which is backed by Ninject <seealso cref="IKernel">Kernel</seealso>.

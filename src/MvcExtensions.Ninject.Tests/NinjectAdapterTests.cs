@@ -9,6 +9,7 @@ namespace MvcExtensions.Ninject.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using System.Web.Mvc;
 
     using Moq;
@@ -22,6 +23,8 @@ namespace MvcExtensions.Ninject.Tests
     using IKernel = global::Ninject.IKernel;
     using IParameter = global::Ninject.Parameters.IParameter;
     using IRequest = global::Ninject.Activation.IRequest;
+    using IContext = global::Ninject.Activation.IContext;
+    using global::Ninject.Web.Common;
 
     public class NinjectAdapterTests
     {
@@ -64,7 +67,8 @@ namespace MvcExtensions.Ninject.Tests
             }
             else if (lifetime == LifetimeType.PerRequest)
             {
-                bindingWhen.Setup(b => b.InRequestScope()).Returns(bindingName.Object).Verifiable();
+                var func = (Func<IContext, object>)Delegate.CreateDelegate(typeof(Func<IContext, object>), typeof(RequestScopeExtensionMethod).GetMethod("GetScope", BindingFlags.NonPublic | BindingFlags.Static));
+                bindingWhen.Setup(b => b.InScope(func)).Returns(bindingName.Object).Verifiable();
             }
 
             var bindingTo = new Mock<IBindingToSyntax>();
