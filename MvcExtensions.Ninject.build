@@ -111,12 +111,12 @@
         <CreateItem Include="$(MSBuildProjectDirectory)\license.txt">
             <Output TaskParameter="Include" ItemName="zipFiles"/>
         </CreateItem>
-        <Zip Files="@(zipFiles)" ZipFileName="$(artifactPath)\$(coreFile).$(SemVer).zip" Flatten="true" ZipLevel="9"/>
+        <Zip Files="@(zipFiles)" ZipFileName="$(artifactPath)\$(coreFile)3.$(SemVer).zip" Flatten="true" ZipLevel="9"/>
 
         <Exec Command="$(nuget).exe pack $(corePath)\$(coreFile).nuspec /basepath $(corePath)\bin\$(Configuration) /outputdirectory $(artifactPath) /version $(SemVer)" />
     </Target>
     
     <Target Name="Publish">
-        <Exec Command="$(nuget).cmd push $(artifactPath)\$(coreFile).$(SemVer).nupkg"/>
+        <Exec Command="$(nuget).cmd push $(artifactPath)\$(coreFile)3.$(SemVer).nupkg"/>
     </Target>
 </Project>
