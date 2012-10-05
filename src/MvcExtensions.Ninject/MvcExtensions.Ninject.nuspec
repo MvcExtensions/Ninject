@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
-    <id>MvcExtensions.Ninject</id>
+    <id>MvcExtensions.Ninject3</id>
     <version>0.0.0.0</version>
     <title>MvcExtensions.Ninject</title>
     <authors>Kazi Manzur Rashid, hazzik</authors>
@@ -11,7 +11,7 @@
     <dependencies>
       <dependency id="Ninject" version="[3.0.0.0]" />
       <dependency id="Ninject.Web.Common" version="[3.0.0.0]" />
-      <dependency id="MvcExtensions" version="[2.5.1,0)" />
+      <dependency id="MvcExtensions" version="[2.5.1,3.0)" />
     </dependencies>
   </metadata>
   <files>

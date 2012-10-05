@@ -1,5 +1,5 @@
 #region Copyright
-// Copyright (c) 2009 - 2010, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// Copyright (c) 2009 - 2011, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>, hazzik <hazzik@gmail.com>.
 // This source is subject to the Microsoft Public License. 
 // See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
 // All other rights reserved.
@@ -10,18 +10,15 @@ namespace MvcExtensions.Ninject.Tests
     using System;
     using System.Collections.Generic;
     using System.Reflection;
-    using Ninject;
-
     using Moq;
     using Xunit;
-
+    using global::Ninject;
+    using global::Ninject.Activation;
+    using global::Ninject.Web.Common;
     using IBindingNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingNamedWithOrOnSyntax<object>;
     using IBindingToSyntax = global::Ninject.Syntax.IBindingToSyntax<object>;
     using IBindingWhenInNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax<object>;
-    using IKernel = global::Ninject.IKernel;
     using IModule = global::Ninject.Modules.INinjectModule;
-    using IContext = global::Ninject.Activation.IContext;
-    using global::Ninject.Web.Common;
 
     public class NinjectBootstrapperTests
     {
@@ -69,11 +66,6 @@ namespace MvcExtensions.Ninject.Tests
 
         private sealed class DummyModule : IModule
         {
-            public void OnVerifyRequiredModules()
-            {
-                throw new NotImplementedException();
-            }
-
             public string Name
             {
                 get;
@@ -91,6 +83,10 @@ namespace MvcExtensions.Ninject.Tests
             }
 
             public void OnUnload(IKernel kernel)
+            {
+            }
+
+            public void OnVerifyRequiredModules()
             {
             }
         }

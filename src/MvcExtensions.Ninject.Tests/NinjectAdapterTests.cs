@@ -1,5 +1,5 @@
 #region Copyright
-// Copyright (c) 2009 - 2010, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>.
+// Copyright (c) 2009 - 2011, Kazi Manzur Rashid <kazimanzurrashid@gmail.com>, hazzik <hazzik@gmail.com>.
 // This source is subject to the Microsoft Public License. 
 // See http://www.microsoft.com/opensource/licenses.mspx#Ms-PL. 
 // All other rights reserved.
@@ -11,25 +11,22 @@ namespace MvcExtensions.Ninject.Tests
     using System.Collections.Generic;
     using System.Reflection;
     using System.Web.Mvc;
-
     using Moq;
     using Xunit;
     using Xunit.Extensions;
-
-    using IBindingMetadata = global::Ninject.Planning.Bindings.IBindingMetadata;
+    using global::Ninject;
+    using global::Ninject.Activation;
+    using global::Ninject.Parameters;
+    using global::Ninject.Planning.Bindings;
+    using global::Ninject.Web.Common;
     using IBindingNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingNamedWithOrOnSyntax<object>;
     using IBindingToSyntax = global::Ninject.Syntax.IBindingToSyntax<object>;
     using IBindingWhenInNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax<object>;
-    using IKernel = global::Ninject.IKernel;
-    using IParameter = global::Ninject.Parameters.IParameter;
-    using IRequest = global::Ninject.Activation.IRequest;
-    using IContext = global::Ninject.Activation.IContext;
-    using global::Ninject.Web.Common;
 
     public class NinjectAdapterTests
     {
-        private readonly Mock<IKernel> kernel;
         private readonly NinjectAdapter adapter;
+        private readonly Mock<IKernel> kernel;
 
         public NinjectAdapterTests()
         {
