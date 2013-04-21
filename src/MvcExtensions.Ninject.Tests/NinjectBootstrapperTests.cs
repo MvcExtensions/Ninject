@@ -19,6 +19,7 @@ namespace MvcExtensions.Ninject.Tests
     using IBindingToSyntax = global::Ninject.Syntax.IBindingToSyntax<object>;
     using IBindingWhenInNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax<object>;
     using IModule = global::Ninject.Modules.INinjectModule;
+    using System.Linq;
 
     public class NinjectBootstrapperTests
     {
@@ -64,6 +65,40 @@ namespace MvcExtensions.Ninject.Tests
             kernel.Verify();
         }
 
+        [Fact]
+        public void Should_be_able_to_load_only_not_loading_modules()
+        {
+            var buildManager = new Mock<IBuildManager>();
+            buildManager.SetupGet(bm => bm.ConcreteTypes).Returns(new[] { typeof(DummyModule), typeof(DummyModule), typeof(DummyModule2) });
+
+            var bindingName = new Mock<IBindingNamedWithOrOnSyntax>();
+            var bindingWhen = new Mock<IBindingWhenInNamedWithOrOnSyntax>();
+
+            bindingWhen.Setup(b => b.InTransientScope()).Returns(bindingName.Object);
+            bindingWhen.Setup(b => b.InSingletonScope()).Returns(bindingName.Object);
+
+            var func = (Func<IContext, object>)Delegate.CreateDelegate(typeof(Func<IContext, object>), typeof(RequestScopeExtensionMethod).GetMethod("GetScope", BindingFlags.NonPublic | BindingFlags.Static));
+            bindingWhen.Setup(b => b.InScope(func)).Returns(bindingName.Object).Verifiable();
+
+            var bindingTo = new Mock<IBindingToSyntax>();
+            bindingTo.Setup(b => b.To(It.IsAny<Type>())).Returns(bindingWhen.Object);
+            bindingTo.Setup(b => b.ToConstant(It.IsAny<object>())).Returns(bindingWhen.Object);
+
+            var kernel = new Mock<IKernel>();
+            kernel.Setup(k => k.Bind(It.IsAny<Type>())).Returns(bindingTo.Object);
+
+            kernel.Setup(k => k.GetModules()).Returns(new[] { Activator.CreateInstance(typeof(DummyModule2)) as IModule });
+            
+            kernel.Setup(k => k.Load(It.IsAny<IEnumerable<IModule>>())).Verifiable();
+            kernel.Setup(k => k.Load(It.Is<IEnumerable<IModule>>(e => e.Any(m => m is DummyModule2)))).Throws(new Exception());
+
+            var bootstrapper = new NinjectBootstrapperTestDouble(kernel.Object, buildManager.Object, new Mock<IBootstrapperTasksRegistry>().Object, new Mock<IPerRequestTasksRegistry>().Object);
+
+            Assert.IsType<NinjectAdapter>(bootstrapper.Adapter);
+
+            kernel.Verify();
+        }
+
         private sealed class DummyModule : IModule
         {
             public string Name
@@ -88,6 +123,36 @@ namespace MvcExtensions.Ninject.Tests
 
             public void OnVerifyRequiredModules()
             {
+            }
+        }
+
+        private sealed class DummyModule2: IModule
+        {
+            public IKernel Kernel
+            {
+                get;
+                private set;
+            }
+
+            public void OnLoad(IKernel kernel)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnUnload(IKernel kernel)
+            {
+                throw new NotImplementedException();
+            }
+
+            public void OnVerifyRequiredModules()
+            {
+                throw new NotImplementedException();
+            }
+
+            public string Name
+            {
+                get;
+                private set;
             }
         }
 
