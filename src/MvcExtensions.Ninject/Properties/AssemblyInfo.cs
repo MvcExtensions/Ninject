@@ -8,8 +8,11 @@
 using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Web;
+using MvcExtensions.Ninject;
 
 [assembly: AssemblyTitle("MvcExtensions.Ninject")]
 [assembly: AssemblyProduct("MvcExtensions.Ninject")]
 [assembly: CLSCompliant(true)]
 [assembly: Guid("82a5c6ba-9251-4277-aee1-214924ed7a6d")]
+[assembly: PreApplicationStartMethod(typeof(NinjectBootstrapper), "Run")]
