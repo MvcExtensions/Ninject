@@ -9,6 +9,7 @@ namespace MvcExtensions.Ninject.Tests
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
 
     using Ninject;
 
@@ -63,6 +64,38 @@ namespace MvcExtensions.Ninject.Tests
             kernel.Verify();
         }
 
+        [Fact]
+        public void Should_be_able_to_load_only_not_loading_modules()
+        {
+            var buildManager = new Mock<IBuildManager>();
+            buildManager.SetupGet(bm => bm.ConcreteTypes).Returns(new[] { typeof(DummyModule), typeof(DummyModule), typeof(DummyModule2) });
+
+            var bindingName = new Mock<IBindingNamedWithOrOnSyntax>();
+            var bindingWhen = new Mock<IBindingWhenInNamedWithOrOnSyntax>();
+
+            bindingWhen.Setup(b => b.InTransientScope()).Returns(bindingName.Object);
+            bindingWhen.Setup(b => b.InSingletonScope()).Returns(bindingName.Object);
+            bindingWhen.Setup(b => b.InRequestScope()).Returns(bindingName.Object);
+
+            var bindingTo = new Mock<IBindingToSyntax>();
+            bindingTo.Setup(b => b.To(It.IsAny<Type>())).Returns(bindingWhen.Object);
+            bindingTo.Setup(b => b.ToConstant(It.IsAny<object>())).Returns(bindingWhen.Object);
+
+            var kernel = new Mock<IKernel>();
+            kernel.Setup(k => k.Bind(It.IsAny<Type>())).Returns(bindingTo.Object);
+
+            kernel.Setup(k => k.GetModules()).Returns(new[] { Activator.CreateInstance(typeof(DummyModule2)) as IModule });
+            
+            kernel.Setup(k => k.Load(It.IsAny<IEnumerable<IModule>>())).Verifiable();
+            kernel.Setup(k => k.Load(It.Is<IEnumerable<IModule>>(e => e.Any(m => m is DummyModule2)))).Throws(new Exception());
+
+            var bootstrapper = new NinjectBootstrapperTestDouble(kernel.Object, buildManager.Object, new Mock<IBootstrapperTasksRegistry>().Object, new Mock<IPerRequestTasksRegistry>().Object);
+
+            Assert.IsType<NinjectAdapter>(bootstrapper.Adapter);
+
+            kernel.Verify();
+        }
+
         private sealed class DummyModule : IModule
         {
             public string Name
@@ -71,6 +104,29 @@ namespace MvcExtensions.Ninject.Tests
                 private set;
             }
 
+            public IKernel Kernel
+            {
+                get;
+                private set;
+            }
+
+            public void OnLoad(IKernel kernel)
+            {
+            }
+
+            public void OnUnload(IKernel kernel)
+            {
+            }
+        }
+
+        private sealed class DummyModule2 : IModule
+        {
+            public string Name
+            {
+                get;
+                private set;
+            }
+ 
             public IKernel Kernel
             {
                 get;
