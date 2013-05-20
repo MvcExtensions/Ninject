@@ -54,6 +54,7 @@ namespace MvcExtensions.Ninject
 
             BuildManager.ConcreteTypes
                         .Where(type => moduleType.IsAssignableFrom(type) && type.HasDefaultConstructor())
+                        .Except(kernel.GetModules().Select(c => c.GetType()))
                         .Each(type => kernel.Load(new[] { Activator.CreateInstance(type) as IModule }));
         }
     }
