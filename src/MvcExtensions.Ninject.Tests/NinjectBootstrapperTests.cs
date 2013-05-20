@@ -10,16 +10,20 @@ namespace MvcExtensions.Ninject.Tests
     using System;
     using System.Collections.Generic;
     using System.Reflection;
+    using System.Linq;
+
     using Moq;
+
     using Xunit;
+
     using global::Ninject;
     using global::Ninject.Activation;
     using global::Ninject.Web.Common;
+
     using IBindingNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingNamedWithOrOnSyntax<object>;
     using IBindingToSyntax = global::Ninject.Syntax.IBindingToSyntax<object>;
     using IBindingWhenInNamedWithOrOnSyntax = global::Ninject.Syntax.IBindingWhenInNamedWithOrOnSyntax<object>;
     using IModule = global::Ninject.Modules.INinjectModule;
-    using System.Linq;
 
     public class NinjectBootstrapperTests
     {
@@ -126,9 +130,15 @@ namespace MvcExtensions.Ninject.Tests
             }
         }
 
-        private sealed class DummyModule2: IModule
+        private sealed class DummyModule2 : IModule
         {
             public IKernel Kernel
+            {
+                get;
+                private set;
+            }
+
+            public string Name
             {
                 get;
                 private set;
@@ -147,12 +157,6 @@ namespace MvcExtensions.Ninject.Tests
             public void OnVerifyRequiredModules()
             {
                 throw new NotImplementedException();
-            }
-
-            public string Name
-            {
-                get;
-                private set;
             }
         }
 
