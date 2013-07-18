@@ -10,7 +10,7 @@ namespace MvcExtensions.Ninject
     using System;
     using System.Linq;
     using System.Web;
-
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
     using IKernel = global::Ninject.IKernel;
     using IModule = global::Ninject.Modules.INinjectModule;
     using Kernel = global::Ninject.StandardKernel;
@@ -28,8 +28,18 @@ namespace MvcExtensions.Ninject
         /// <param name="buildManager">The build manager.</param>
         /// <param name="bootstrapperTasks">The bootstrapper tasks.</param>
         /// <param name="perRequestTasks">The per request tasks.</param>
-        public NinjectBootstrapper(IBuildManager buildManager, IBootstrapperTasksRegistry bootstrapperTasks, IPerRequestTasksRegistry perRequestTasks) : base(buildManager, bootstrapperTasks, perRequestTasks)
+        public NinjectBootstrapper(IBuildManager buildManager, IBootstrapperTasksRegistry bootstrapperTasks, IPerRequestTasksRegistry perRequestTasks) 
+            : base(buildManager, bootstrapperTasks, perRequestTasks)
         {
+        }
+
+        /// <summary>
+        /// Starts this bootstapper
+        /// </summary>
+        public static void Run()
+        {
+            Current = new NinjectBootstrapper(BuildManagerWrapper.Current, BootstrapperTasksRegistry.Current, PerRequestTasksRegistry.Current);
+            DynamicModuleUtility.RegisterModule(typeof(BootstrapperModule));
         }
 
         /// <summary>

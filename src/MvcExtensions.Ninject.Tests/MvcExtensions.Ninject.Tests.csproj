@@ -59,7 +59,10 @@
       <HintPath>..\..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
     </Reference>
     <Reference Include="MvcExtensions">
-      <HintPath>..\..\packages\MvcExtensions.2.5.1\lib\net40\MvcExtensions.dll</HintPath>
+      <HintPath>..\..\packages\MvcExtensions.3.0.0-alpha1021\lib\net40\MvcExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcExtensions.FluentMetadata">
+      <HintPath>..\..\packages\MvcExtensions.FluentMetadata.3.0.0-alpha1021\lib\net40\MvcExtensions.FluentMetadata.dll</HintPath>
     </Reference>
     <Reference Include="Ninject">
       <HintPath>..\..\packages\Ninject.2.2.1.4\lib\net40-Full\Ninject.dll</HintPath>
@@ -94,7 +97,6 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="NinjectBootstrapperTests.cs" />
-    <Compile Include="NinjectMvcApplicationTests.cs" />
     <Compile Include="NinjectAdapterTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
