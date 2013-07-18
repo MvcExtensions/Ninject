@@ -39,7 +39,7 @@ namespace MvcExtensions.Ninject
         public static void Run()
         {
             Current = new NinjectBootstrapper(BuildManagerWrapper.Current, BootstrapperTasksRegistry.Current, PerRequestTasksRegistry.Current);
-            DynamicModuleUtility.RegisterModule(typeof(Module));
+            DynamicModuleUtility.RegisterModule(typeof(BootstrapperModule));
         }
 
         /// <summary>
